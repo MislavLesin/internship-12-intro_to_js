@@ -6,6 +6,9 @@ while (userDecision != 0) {
     case "0":
       ExitMessage();
       break;
+    case "1":
+      DeveloperMenu();
+      break;
     case "2":
       ProgrammingLanguageMenu();
       break;
@@ -17,4 +20,3 @@ while (userDecision != 0) {
     // code block
   }
 }
-
