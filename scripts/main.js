@@ -1,32 +1,20 @@
 alert("Hello there");
-let userDecision = ShowMenu();
-switch (userDecision) {
-  case "0":
-    ExitMessage();
-    break;
-  case "2":
-    userDecision2 = ProgrammingLanguageMenu();
-    ProgrammingLanguageDecision(userDecision2);
-    break;
-  default:
-  // code block
-}
-
-function ProgrammingLanguageDecision(decisionIndex) {
-  switch (decisionIndex) {
+let userDecision = -1;
+while (userDecision != 0) {
+  userDecision = ShowMenu();
+  switch (userDecision) {
     case "0":
       ExitMessage();
-      return false;
-      break;
-    case "1":
-      ProgrammingLanguageCreateNew();
       break;
     case "2":
-      PrintProgrammingLanguages();
+      ProgrammingLanguageMenu();
       break;
+    case null:
+      ExitMessage();
+      userDecision = "0";
+      break;
+    default:
+    // code block
   }
 }
 
-function ExitMessage() {
-  alert("Exitting");
-}
