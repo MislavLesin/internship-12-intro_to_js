@@ -12,11 +12,13 @@ while (userDecision != 0) {
     case "2":
       ProgrammingLanguageMenu();
       break;
+    case "3":
+      CompanyMenu();
+      break;
     case null:
       ExitMessage();
       userDecision = "0";
       break;
     default:
-    // code block
   }
 }

@@ -3,7 +3,12 @@ const Developers = [
     id: 1,
     name: "Marko Markic",
     employmentStatus: EmploymentStatusEnum.EMPLOYED,
-    companyName: "Erricsson",
+    company: [
+      {
+        id: 1,
+        name: "Erricsson",
+      },
+    ],
     developerType: DeveloperTypesEnum.BACKEND,
     knownLanguages: [
       {
@@ -20,7 +25,12 @@ const Developers = [
     id: 2,
     name: "Ivo Ivic",
     employmentStatus: EmploymentStatusEnum.EMPLOYED,
-    companyName: "Atos",
+    company: [
+      {
+        id: 2,
+        name: "Atos",
+      },
+    ],
     developerType: DeveloperTypesEnum.FULLSTACK,
     knownLanguages: [
       {
@@ -41,7 +51,12 @@ const Developers = [
     id: 3,
     name: "Mislav Lesin",
     employmentStatus: EmploymentStatusEnum.EMPLOYED,
-    companyName: "Profico",
+    company: [
+      {
+        id: 3,
+        name: "Profico",
+      },
+    ],
     developerType: DeveloperTypesEnum.FRONTEND,
     knownLanguages: [
       {
@@ -62,7 +77,12 @@ const Developers = [
     id: 4,
     name: "Mirko Mirkic",
     employmentStatus: EmploymentStatusEnum.EMPLOYED,
-    companyName: "Profico",
+    company: [
+      {
+        id: 3,
+        name: "Profico",
+      },
+    ],
     developerType: DeveloperTypesEnum.FULLSTACK,
     knownLanguages: [
       {
@@ -83,6 +103,12 @@ const Developers = [
     id: 5,
     name: "Vinko Vukusic",
     employmentStatus: EmploymentStatusEnum.EMPLOYED,
+    company: [
+      {
+        id: 3,
+        name: "Profico",
+      },
+    ],
     developerType: DeveloperTypesEnum.FULLSTACK,
     knownLanguages: [
       {
@@ -103,7 +129,7 @@ const Developers = [
     id: 6,
     name: "Ana Anic",
     employmentStatus: EmploymentStatusEnum.FREELANCING,
-    companyName: undefined,
+    company: [undefined],
     developerType: DeveloperTypesEnum.BACKEND,
     knownLanguages: [
       {
@@ -124,7 +150,7 @@ const Developers = [
     id: 7,
     name: "Maja Majic",
     employmentStatus: EmploymentStatusEnum.UNEMPLOYED,
-    companyName: undefined,
+    company: [undefined],
     developerType: DeveloperTypesEnum.FULLSTACK,
     knownLanguages: [
       {
@@ -145,7 +171,7 @@ const Developers = [
     id: 8,
     name: "Lucija Lucic",
     employmentStatus: EmploymentStatusEnum.UNEMPLOYED,
-    companyName: undefined,
+    company: [undefined],
     developerType: DeveloperTypesEnum.BACKEND,
     knownLanguages: [
       {

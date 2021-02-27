@@ -64,13 +64,10 @@ function GetProgrammingLanguageId() {
 
 function PrintProgrammingLanguages() {
   SortProgrammingLanguages();
-  let languagesList = "";
   for (let language of ProgrammingLanguages) {
-    languagesList += `Id - ${language.id} \n
-    Name - ${language.name} \n \n`;
+    alert(`Id - ${language.id} \n
+    Name - ${language.name} \n \n`);
   }
-
-  alert(languagesList);
 }
 
 function SelectProgrammingLanguageIndex() {
