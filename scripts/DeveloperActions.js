@@ -22,7 +22,6 @@ function DeveloperDecision(userDecision) {
     case "0":
       ExitMessage();
       return false;
-      break;
     case "1":
       CreateNewDeveloper();
       break;
@@ -62,15 +61,24 @@ function UpdateDeveloper() {
         Developers[index].developerType
       );
       updatedDeveloper.employmentStatus = newEmplomentStatus;
+      updatedDeveloper.developerType = newDeveloperType;
       let updateCompany = prompt(
         `Update company?`,
         updatedDeveloper?.company?.name
       );
       if (updateCompany != null) {
-        updatedDeveloper.company = SelectDeveloperCompany();
+        let bigCompany  = SelectDeveloperCompany();
+        if(bigCompany.id != updatedDeveloper.company.id) {
+          updatedDeveloper.company = [{
+            id: bigCompany.id,
+            name: bigCompany.name,
+          }];
+          RemoveDeveloperFromCompany(Developers[index]);
+          AddDeveloperToCompany(updatedDeveloper,updatedDeveloper.company);
+        }
       }
-      decision = prompt("Update languages?","yes");
-      if(decision == "yes") {
+      decision = prompt("Update languages?", "yes");
+      if (decision == "yes") {
         PrintDeveloperLanguages(index);
         AddLanguageToDeveloper(updatedDeveloper.knownLanguages);
       }
@@ -81,51 +89,49 @@ function UpdateDeveloper() {
   }
 }
 function AddLanguageToDeveloper(knownLanguages) {
-  let decision = prompt(`Select from existing database?`,"yes");
-  if(decision == "yes") {
-    for (let language of ProgrammingLanguages) {
-      alert(`Id - ${language.id} \n
+  alert("Select existing language to remove it, or new language to add");
+  for (let language of ProgrammingLanguages) {
+    alert(`Id - ${language.id} \n
       Name - ${language.name} \n \n`);
-    }
-    let selectedId = prompt("Enter language Id",knownLanguages?.name);
-    for (let language of ProgrammingLanguages) {
-      if(language.id == selectedId) {
-        if(knownLanguages.find(lang => lang.id == language.id)) {
-          knownLanguages.pop(language);
-          alert("Language removed!");
-        }
+  }
+  let selectedId = prompt("Enter language Id");
+  for (let language of ProgrammingLanguages) {
+    if (language.id == selectedId) {
+      if (knownLanguages.find((lang) => lang.id == language.id)) {
+        knownLanguages.pop(language);
+        alert("Language removed!");
+      } else {
         knownLanguages.push(language);
+        alert("Language " + language.name + " added!");
         return knownLanguages;
       }
     }
-    alert("No language found");
-    return undefined;
   }
-  else {
-    /////////////////////////////pazit da kad ga dodas da ga stavis i u ProgrammingLanguages
-  }
+  alert("No language found");
+  return undefined;
 }
 
 function PrintDeveloperLanguages(index) {
   let developer = Developers[index];
-  if(developer.knownLanguages == null) {
+  if (developer.knownLanguages == null) {
     alert("Knows no language..");
     return undefined;
   }
-   alert(`Developer ${developer.name} knows ${developer.knownLanguages.length} languages`);
-  for(let i = 0; i < developer.knownLanguages.length; i++){
+  alert(
+    `Developer ${developer.name} knows ${developer.knownLanguages.length} languages`
+  );
+  for (let i = 0; i < developer.knownLanguages.length; i++) {
     alert(developer.knownLanguages[i].name);
   }
-   return true;
+  return true;
 }
 
 function SelectDeveloperIndex() {
-  let developersList = "";
   for (let developer of Developers) {
-    developersList += `Id - ${developer.id} \n
-    Name - ${developer.name} \n \n`;
+   alert(`Id - ${developer.id} \n
+    Name - ${developer.name} \n`);
   }
-  let selectedId = prompt(developersList, "Id -");
+  let selectedId = prompt("Select developer Id: ", "Id -");
   for (let i = 0; i < Developers.length; i++) {
     if (Developers[i].id == selectedId) {
       return i;
@@ -143,6 +149,7 @@ function DeleteDeveloper() {
     for (let i = 0; i < Developers.length; i++) {
       if (Developers[i].id == developerId) {
         alert(`Removed ${Developers[i].name}`);
+        RemoveDeveloperFromCompany(Developers[i]);
         Developers.splice(i, 1);
         return true;
       }
@@ -152,16 +159,41 @@ function DeleteDeveloper() {
   }
 }
 
+function RemoveDeveloperFromCompany(developer) {
+  if(developer.company == undefined) {
+   console.log("Undefiend developers company");
+    return true;
+  }
+  else {
+    for(let comp of Companies) {
+      console.log(comp.developers);
+      if(comp.developers.length != 0 || comp.developers != undefined) {
+        for(let i = 0; i < comp.developers.length; i++) {
+          if(comp.developers[i].id == developer.id) {
+            comp.developers.splice(i,1);
+            alert(`Developer ${developer.name} is removed from company ${comp.name}`);
+          }
+        }
+      }
+    }
+  }
+}
+
 function CreateNewDeveloper() {
   let name = prompt("Enter new developer's Name :", "Name -");
   if (name == null) {
     alert("Exitting");
     return false;
   }
+  let company = undefined;
   let developerType = SelectDeveloperType("1");
   let employmentStatus = SelectEmploymentStatus("1");
   if (employmentStatus == EmploymentStatusEnum.EMPLOYED) {
-    var company = SelectDeveloperCompany();
+    let fullCompany = SelectDeveloperCompany();
+    company = {
+      id: fullCompany.id,
+      name: fullCompany.name,
+    };
   }
   let decision = prompt(`Would you like to save developer ${name} ?`, "yes");
   if (decision != null) {
@@ -187,15 +219,33 @@ function SelectDeveloperCompany() {
   return undefined;
 }
 function SaveDeveloper(_name, _employmentStatus, _developerType, _company) {
-  Developers.push({
+
+    let developer = {
     id: GetDeveloperId(),
     name: _name,
     employmentStatus: _employmentStatus,
     developerType: _developerType,
     company: _company,
-  });
+  };
+  Developers.push(developer);
   SortDevelopers();
+  AddDeveloperToCompany(developer, _company);
   alert(`Developer ${_name} saved sucessfully!`);
+}
+
+function AddDeveloperToCompany(developer, smallCompany) {
+  for (let company of Companies) {
+    if(company.id == smallCompany.id) {
+      company.developers.push({
+        id: developer.id,
+        name: developer.name,
+        employmentStatus: developer.employmentStatus,
+        developerType: developer.developerType,
+      });
+      alert(`Developer ${developer.name} added to company ${smallCompany.name}`);
+      break;
+    }
+  }
 }
 function SelectDeveloperType(defaultValue) {
   let index = prompt(
@@ -246,9 +296,10 @@ function PrintDevelopers() {
     alert(`Id - ${developer.id} \n
       Name - ${developer.name} \n 
       Emploment Status : ${developer?.employmentStatus} \n
-      Company : ${developer?.company?.name} \n 
+      Company : ${developer?.company[0]?.name} \n 
       Developer Type : ${developer?.developerType} \n
       Known Languages : \n`);
+      console.log(developer?.company[0]);//////////////////
     if (developer.knownLanguages != undefined) {
       for (let language of developer.knownLanguages) {
         languageList += `\t - ${language.name} \n`;

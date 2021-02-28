@@ -162,7 +162,7 @@ const Developers = [
         name: "C++",
       },
       {
-        id: 5,
+        id: 4,
         name: "Java",
       },
     ],
@@ -192,16 +192,6 @@ const Companies = [
         name: "Marko Markic",
         employmentStatus: EmploymentStatusEnum.EMPLOYED,
         developerType: DeveloperTypesEnum.BACKEND,
-        knownLanguages: [
-          {
-            id: 1,
-            name: "C",
-          },
-          {
-            id: 2,
-            name: "C#",
-          },
-        ],
       },
     ],
   },
@@ -214,20 +204,6 @@ const Companies = [
         name: "Ivo Ivic",
         employmentStatus: EmploymentStatusEnum.EMPLOYED,
         developerType: DeveloperTypesEnum.FULLSTACK,
-        knownLanguages: [
-          {
-            id: 2,
-            name: "C#",
-          },
-          {
-            id: 3,
-            name: "C++",
-          },
-          {
-            id: 4,
-            name: "Java",
-          },
-        ],
       },
     ],
   },
@@ -240,60 +216,18 @@ const Companies = [
         name: "Mislav Lesin",
         employmentStatus: EmploymentStatusEnum.EMPLOYED,
         developerType: DeveloperTypesEnum.FRONTEND,
-        knownLanguages: [
-          {
-            id: 3,
-            name: "C++",
-          },
-          {
-            id: 4,
-            name: "Java",
-          },
-          {
-            id: 5,
-            name: "Python",
-          },
-        ],
       },
       {
         id: 4,
         name: "Mirko Mirkic",
         employmentStatus: EmploymentStatusEnum.EMPLOYED,
         developerType: DeveloperTypesEnum.FULLSTACK,
-        knownLanguages: [
-          {
-            id: 3,
-            name: "C++",
-          },
-          {
-            id: 4,
-            name: "Java",
-          },
-          {
-            id: 5,
-            name: "Python",
-          },
-        ],
       },
       {
         id: 5,
         name: "Vinko Vukusic",
         employmentStatus: EmploymentStatusEnum.EMPLOYED,
         developerType: DeveloperTypesEnum.FULLSTACK,
-        knownLanguages: [
-          {
-            id: 1,
-            name: "C",
-          },
-          {
-            id: 2,
-            name: "C#",
-          },
-          {
-            id: 5,
-            name: "Python",
-          },
-        ],
       },
     ],
   },

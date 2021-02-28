@@ -96,6 +96,7 @@ function DeleteProgrammingLanguage() {
       if (ProgrammingLanguages[i].id == languageId) {
         alert(`Removed ${ProgrammingLanguages[i].name}`);
         ProgrammingLanguages.splice(i, 1);
+        RemoveLanguageFromDevelopers(languageId);
         isRemoved = true;
         break;
       }
@@ -106,6 +107,20 @@ function DeleteProgrammingLanguage() {
       alert(`Language with Id - ${languageId} does not exist!`);
       return null;
     }
+  }
+}
+function RemoveLanguageFromDevelopers(languageId) {
+  if (Developers.length == 0) {
+    alert("Developers list is empty!");
+    return true;
+  }
+  for (let i = 0; i < Developers.length; i++) {
+    if (Developers[i].knownLanguages.length > 0)
+      for (let j = 0; j < Developers[i].knownLanguages.length; j++) {
+        if (Developers[i].knownLanguages[j].id == languageId) {
+          Developers[i].knownLanguages.splice(j, 1);
+        }
+      }
   }
 }
 
@@ -122,11 +137,27 @@ function UpdateProgrammingLanguage() {
       ExitMessage();
       return false;
     } else {
-      updatedLanguage.name = decision;
+      updatedLanguage.name = FormatName(decision);
       ProgrammingLanguages.splice(languageIndex, 1, updatedLanguage);
+      UpdateLanguageInDevelopers(updatedLanguage);
       alert(`Successfully updated ${ProgrammingLanguages[languageIndex].name}`);
       return true;
     }
+  }
+}
+
+function UpdateLanguageInDevelopers(updatedLanguage) {
+  if (Developers.length == 0) {
+    alert("Developers list is empty!");
+    return true;
+  }
+  for (let i = 0; i < Developers.length; i++) {
+    if (Developers[i].knownLanguages.length > 0)
+      for (let j = 0; j < Developers[i].knownLanguages.length; j++) {
+        if (Developers[i].knownLanguages[j].id == updatedLanguage.id) {
+          Developers[i].knownLanguages.splice(j, 1, updatedLanguage);
+        }
+      }
   }
 }
 function SortProgrammingLanguages() {
