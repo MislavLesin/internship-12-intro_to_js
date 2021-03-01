@@ -54,7 +54,7 @@ function UpdateCompany() {
     } else {
       updatedCompany.name = decision;
       let newCompanyDevelopers = UpdateDevelopers(Companies[index]);
-      updatedCompany.developers = newCompanyDevelopers;
+      updatedCompany = newCompanyDevelopers;
       Companies.splice(index,1,updatedCompany);
       alert(`Company ${updatedCompany.name} updated!`);
   }
@@ -65,13 +65,14 @@ function UpdateDevelopers(company) {
   PrintCompanyDevelopers(company);
   let decision = undefined;
     decision = prompt("Add developers?","cancel to skip");
+    console.log(decision);
     if(decision != null) {
       console.log("updatedevelopers()");
-      AddDevelopersToCompany(company);
+      company = AddDevelopersToCompany(company);
     }
-  decision = undefined;
+  decision = " ";
   while(decision != null) {
-    prompt("Remove developers?","cancel to skip");
+    decision = prompt("Remove developers?","cancel to skip");
     if(decision != null) {
       RemoveDeveloperFromCompany(company);
     }
@@ -90,30 +91,48 @@ function RemoveDeveloperFromCompany(company) {
   for(let i = 0; i < company.developers.length; i++) {
     if(company.developers[i].id == devId) {
       alert(`Removed ${company.developers[i].name} from ${company.name}`);
+      SetDeveloperToUnemplyed(company.developers[i].id);
       company.developers.splice(i,1);
     }
   }
 }
-
+function SetDeveloperToUnemplyed(developerId) {
+  for(let i = 0; i < Developers.length; i++) {
+    if(Developers[i].id = developerId) {
+      Developers[i].employmentStatus = EmploymentStatusEnum.UNEMPLOYED;
+      Developers[i].company = [{}];
+      alert(`${Developers[i].name} --- ${Developers[i].employmentStatus}`);
+      return true;
+    }
+  }
+}
 function AddDevelopersToCompany(company) {
   let decision = " ";
   while(decision != null) {
     alert("Enter Id to add: ");
     PrintAllDevelopers();
     decision = prompt("Enter developer id to add, or cancel to exit","enter Id :");
+    if(decision == null) {return company;}
     for (let i = 0; i < Developers.length; i++) {
       if (Developers[i].id == decision) {
+        alert("pushing " + Developers[i].name);
         company.developers.push({
           id: Developers[i].id,
           name: Developers[i].name,
           employmentStatus: Developers[i].employmentStatus,
           developerType: Developers[i].developerType,
         });
-        return true;
+        Developers[i].employmentStatus = EmploymentStatusEnum.EMPLOYED;
+        Developers[i].company = [{
+          id: company.id,
+          name: company.name,
+        }];
+        alert("Added developer!");
+        break;
       }
     }
-    alert("There is no developer with id " + selectedId);
   }
+  return company;
 }
 function PrintAllDevelopers() {
   for (let developer of Developers) {
