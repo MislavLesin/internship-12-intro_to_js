@@ -10,6 +10,12 @@ function DeveloperMenu() {
       "\n" +
       "4 - Update existing Developer" +
       "\n" +
+      "5 - Read Developers by Type" +
+      "\n" +
+      "6 - Read Developers by Programming Language" +
+      "\n" +
+      "7 - Read Developers by Employment Status" +
+      "\n" +
       "0 - Exit",
     "0"
   );
@@ -34,14 +40,115 @@ function DeveloperDecision(userDecision) {
     case "4":
       UpdateDeveloper();
       break;
+    case "5":
+      PrintDevelopersByType();
+      break;
+    case "6":
+      PrintDevelopersByLanguage();
+      break;
+      case "7":
+        PrintDevelopersByStatus();
+        break;
     case null:
       ExitMessage();
       return false;
   }
 }
+function PrintDevelopersByLanguage() {
+  for (let language of ProgrammingLanguages) {
+    alert(`Id - ${language.id} \n
+    Name - ${language.name} \n \n`);
+  }
+  
+  let decision = prompt("Enter language Id to search: ", "1");
+  if (decision == null) {
+    return true;
+  }
+  for (let language of ProgrammingLanguages) {
+    if (language.id == decision) {
+      PrintDevelopersWithLanguage(language.id);
+    }
+  }
+}
+
+function PrintDevelopersWithLanguage(languageId) {
+  for (let i = 0; i < Developers.length; i++) {
+    if (Developers[i].knownLanguages != undefined) {
+      for (j = 0; j < Developers[i].knownLanguages.length; j++) {
+        if (Developers[i].knownLanguages[j].id == languageId) {
+          let languageList = "";
+          alert(`Id - ${Developers[i].id} \n
+            Name - ${Developers[i].name} \n 
+            Emploment Status : ${Developers[i]?.employmentStatus} \n
+            Company : ${Developers[i]?.company[0]?.name} \n 
+            Developer Type : ${Developers[i]?.developerType} \n
+            Known Languages : \n`);
+          if (Developers[i].knownLanguages != undefined) {
+            for (let lang of Developers[i].knownLanguages) {
+              languageList += `\t - ${lang.name} \n`;
+            }
+            languageList += `======================= \n \n`;
+            alert(languageList);
+          } else {
+            alert("None");
+          }
+          break;
+        }
+      }
+    }
+  }
+}
+function PrintDevelopersByStatus() {
+  let status = SelectEmploymentStatus("1");
+  for (let i = 0; i < Developers.length; i++) {
+    if (Developers[i].employmentStatus == status) {
+      let languageList = "";
+      alert(`Id - ${Developers[i].id} \n
+        Name - ${Developers[i].name} \n 
+        Emploment Status : ${Developers[i]?.employmentStatus} \n
+        Company : ${Developers[i]?.company[0]?.name} \n 
+        Developer Type : ${Developers[i]?.developerType} \n
+        Known Languages : \n`);
+      if (Developers[i].knownLanguages != undefined) {
+        for (let language of Developers[i].knownLanguages) {
+          languageList += `\t - ${language.name} \n`;
+        }
+        languageList += `======================= \n \n`;
+        alert(languageList);
+      } else {
+        alert("None");
+      }
+    }
+  }
+}
+
+function PrintDevelopersByType() {
+  let status = SelectDeveloperType("1");
+  for (let i = 0; i < Developers.length; i++) {
+    if (Developers[i].developerType == status) {
+      let languageList = "";
+      alert(`Id - ${Developers[i].id} \n
+        Name - ${Developers[i].name} \n 
+        Emploment Status : ${Developers[i]?.employmentStatus} \n
+        Company : ${Developers[i]?.company[0]?.name} \n 
+        Developer Type : ${Developers[i]?.developerType} \n
+        Known Languages : \n`);
+      if (Developers[i].knownLanguages != undefined) {
+        for (let language of Developers[i].knownLanguages) {
+          languageList += `\t - ${language.name} \n`;
+        }
+        languageList += `======================= \n \n`;
+        alert(languageList);
+      } else {
+        alert("None");
+      }
+    }
+  }
+}
 
 function UpdateDeveloper() {
   alert("Enter Developer Id to Edit: ");
+  SortDevelopers();
   let index = SelectDeveloperIndex();
   if (index == null) {
     alert("Developer does not exist!");
@@ -67,14 +174,16 @@ function UpdateDeveloper() {
         updatedDeveloper?.company?.name
       );
       if (updateCompany != null) {
-        let bigCompany  = SelectDeveloperCompany();
-        if(bigCompany.id != updatedDeveloper.company.id) {
-          updatedDeveloper.company = [{
-            id: bigCompany.id,
-            name: bigCompany.name,
-          }];
+        let bigCompany = SelectDeveloperCompany();
+        if (bigCompany.id != updatedDeveloper.company.id) {
+          updatedDeveloper.company = [
+            {
+              id: bigCompany.id,
+              name: bigCompany.name,
+            },
+          ];
           RemoveDeveloperFromCompany(Developers[index]);
-          AddDeveloperToCompany(updatedDeveloper,updatedDeveloper.company);
+          AddDeveloperToCompany(updatedDeveloper, updatedDeveloper.company);
         }
       }
       decision = prompt("Update languages?", "yes");
@@ -128,7 +237,7 @@ function PrintDeveloperLanguages(index) {
 
 function SelectDeveloperIndex() {
   for (let developer of Developers) {
-   alert(`Id - ${developer.id} \n
+    alert(`Id - ${developer.id} \n
     Name - ${developer.name} \n`);
   }
   let selectedId = prompt("Select developer Id: ", "Id -");
@@ -160,18 +269,19 @@ function DeleteDeveloper() {
 }
 
 function RemoveDeveloperFromCompany(developer) {
-  if(developer.company == undefined) {
-   console.log("Undefiend developers company");
+  if (developer.company == undefined) {
+    console.log("Undefiend developers company");
     return true;
-  }
-  else {
-    for(let comp of Companies) {
+  } else {
+    for (let comp of Companies) {
       console.log(comp.developers);
-      if(comp.developers.length != 0 || comp.developers != undefined) {
-        for(let i = 0; i < comp.developers.length; i++) {
-          if(comp.developers[i].id == developer.id) {
-            comp.developers.splice(i,1);
-            alert(`Developer ${developer.name} is removed from company ${comp.name}`);
+      if (comp.developers.length != 0 || comp.developers != undefined) {
+        for (let i = 0; i < comp.developers.length; i++) {
+          if (comp.developers[i].id == developer.id) {
+            comp.developers.splice(i, 1);
+            alert(
+              `Developer ${developer.name} is removed from company ${comp.name}`
+            );
           }
         }
       }
@@ -219,8 +329,7 @@ function SelectDeveloperCompany() {
   return undefined;
 }
 function SaveDeveloper(_name, _employmentStatus, _developerType, _company) {
-
-    let developer = {
+  let developer = {
     id: GetDeveloperId(),
     name: _name,
     employmentStatus: _employmentStatus,
@@ -235,14 +344,17 @@ function SaveDeveloper(_name, _employmentStatus, _developerType, _company) {
 
 function AddDeveloperToCompany(developer, smallCompany) {
   for (let company of Companies) {
-    if(company.id == smallCompany.id) {
+    if (company.id == smallCompany.id) {
       company.developers.push({
         id: developer.id,
         name: developer.name,
         employmentStatus: developer.employmentStatus,
         developerType: developer.developerType,
       });
-      alert(`Developer ${developer.name} added to company ${smallCompany.name}`);
+      alert(
+        `Developer ${developer.name} added to company ${smallCompany.name}`
+      );
+      SortDevelopers();
       break;
     }
   }
@@ -299,7 +411,7 @@ function PrintDevelopers() {
       Company : ${developer?.company[0]?.name} \n 
       Developer Type : ${developer?.developerType} \n
       Known Languages : \n`);
-      console.log(developer?.company[0]);//////////////////
+    console.log(developer?.company[0]); //////////////////
     if (developer.knownLanguages != undefined) {
       for (let language of developer.knownLanguages) {
         languageList += `\t - ${language.name} \n`;

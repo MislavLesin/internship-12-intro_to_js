@@ -23,7 +23,7 @@ function CompanyDecision(userDecision) {
       ExitMessage();
       return false;
     case "1":
-      CreateNewCompany(); 
+      CreateNewCompany();
       break;
     case "2":
       PrintCompanies();
@@ -55,67 +55,73 @@ function UpdateCompany() {
       updatedCompany.name = decision;
       let newCompanyDevelopers = UpdateDevelopers(Companies[index]);
       updatedCompany = newCompanyDevelopers;
-      Companies.splice(index,1,updatedCompany);
+      Companies.splice(index, 1, updatedCompany);
       alert(`Company ${updatedCompany.name} updated!`);
+    }
   }
-}
 }
 
 function UpdateDevelopers(company) {
   PrintCompanyDevelopers(company);
   let decision = undefined;
-    decision = prompt("Add developers?","cancel to skip");
-    console.log(decision);
-    if(decision != null) {
-      console.log("updatedevelopers()");
-      company = AddDevelopersToCompany(company);
-    }
+  decision = prompt("Add developers?", "cancel to skip");
+  console.log(decision);
+  if (decision != null) {
+    console.log("updatedevelopers()");
+    company = AddDevelopersToCompany(company);
+  }
   decision = " ";
-  while(decision != null) {
-    decision = prompt("Remove developers?","cancel to skip");
-    if(decision != null) {
+  while (decision != null) {
+    decision = prompt("Remove developers?", "cancel to skip");
+    if (decision != null) {
       RemoveDeveloperFromCompany(company);
     }
-  } 
+  }
   return company;
 }
 
 function RemoveDeveloperFromCompany(company) {
-  if(company.developers.length == 0) {
+  if (company.developers.length == 0) {
     alert("No developers to remove!");
     return false;
   }
   PrintCompanyDevelopers(company);
   let devId = prompt("Enter developer id to remove: ");
-  if(devId == null) {return false;}
-  for(let i = 0; i < company.developers.length; i++) {
-    if(company.developers[i].id == devId) {
+  if (devId == null) {
+    return false;
+  }
+  for (let i = 0; i < company.developers.length; i++) {
+    if (company.developers[i].id == devId) {
       alert(`Removed ${company.developers[i].name} from ${company.name}`);
-      SetDeveloperToUnemplyed(company.developers[i].id);
-      company.developers.splice(i,1);
+      SetDeveloperToUnemplyed(devId);
+      company.developers.splice(i, 1);
     }
   }
 }
 function SetDeveloperToUnemplyed(developerId) {
-  for(let i = 0; i < Developers.length; i++) {
-    if(Developers[i].id = developerId) {
+  for (let i = 0; i < Developers.length; i++) {
+    if ((Developers[i].id == developerId)) {
       Developers[i].employmentStatus = EmploymentStatusEnum.UNEMPLOYED;
       Developers[i].company = [{}];
-      alert(`${Developers[i].name} --- ${Developers[i].employmentStatus}`);
       return true;
     }
   }
 }
+
 function AddDevelopersToCompany(company) {
   let decision = " ";
-  while(decision != null) {
+  while (decision != null) {
     alert("Enter Id to add: ");
     PrintAllDevelopers();
-    decision = prompt("Enter developer id to add, or cancel to exit","enter Id :");
-    if(decision == null) {return company;}
+    decision = prompt(
+      "Enter developer id to add, or cancel to exit",
+      "enter Id :"
+    );
+    if (decision == null) {
+      return company;
+    }
     for (let i = 0; i < Developers.length; i++) {
       if (Developers[i].id == decision) {
-        alert("pushing " + Developers[i].name);
         company.developers.push({
           id: Developers[i].id,
           name: Developers[i].name,
@@ -123,10 +129,12 @@ function AddDevelopersToCompany(company) {
           developerType: Developers[i].developerType,
         });
         Developers[i].employmentStatus = EmploymentStatusEnum.EMPLOYED;
-        Developers[i].company = [{
-          id: company.id,
-          name: company.name,
-        }];
+        Developers[i].company = [
+          {
+            id: company.id,
+            name: company.name,
+          },
+        ];
         alert("Added developer!");
         break;
       }
@@ -138,16 +146,17 @@ function PrintAllDevelopers() {
   for (let developer of Developers) {
     alert(`Id - ${developer.id} \n
      Name - ${developer.name} \n`);
-   }
+  }
 }
 
 function PrintCompanyDevelopers(company) {
-  if(company.developers.length == 0) {
+  if (company.developers.length == 0) {
     alert("There are no developers in this company");
-  }
-  else {
-    alert(`There are ${company.developers.length} developers in ${company.name}`);
-    for(let dev of company.developers) {
+  } else {
+    alert(
+      `There are ${company.developers.length} developers in ${company.name}`
+    );
+    for (let dev of company.developers) {
       alert(`Id - ${dev.id} \n
       Name - ${dev.name}`);
     }
@@ -157,15 +166,15 @@ function SelectCompanyIndex() {
   for (let company of Companies) {
     alert(`Id - ${company.id} \n
      Name - ${company.name} \n`);
-   }
-   let selectedId = prompt("Select company Id: ", "Id -");
-   for (let i = 0; i < Companies.length; i++) {
-     if (Companies[i].id == selectedId) {
-       return i;
-     }
-   }
-   alert("There is no company with id " + selectedId);
-   return null;
+  }
+  let selectedId = prompt("Select company Id: ", "Id -");
+  for (let i = 0; i < Companies.length; i++) {
+    if (Companies[i].id == selectedId) {
+      return i;
+    }
+  }
+  alert("There is no company with id " + selectedId);
+  return null;
 }
 
 function DeleteCompany() {
@@ -186,9 +195,9 @@ function DeleteCompany() {
   }
 }
 function RemoveCompanyFromDeveloper(developersCompany) {
-  for(let i = 0; i < Developers.length; i++) {
-    if(Developers[i].company[0] != undefined) {
-      if(Developers[i].company[0].id == developersCompany.id) {
+  for (let i = 0; i < Developers.length; i++) {
+    if (Developers[i].company[0] != undefined) {
+      if (Developers[i].company[0].id == developersCompany.id) {
         Developers[i].company = [undefined];
         console.log(Developers[i].company);
       }
